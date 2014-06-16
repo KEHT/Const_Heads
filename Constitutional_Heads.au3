@@ -196,6 +196,8 @@ Func createWordDoc($recordHash)
 	$oWordApp = _Word_Create(0, True)
 	$oFinalWordApp = _Word_Create(0, True)
 	$oDoc_2 = _Word_DocAdd($oFinalWordApp)
+	If @error Then Exit MsgBox($MB_ICONERROR, "createWordDoc: _Word_DocAdd Final Doc", "Error creating a new Word document." _
+				 & @CRLF & "@error = " & @error & ", @extended = " & @extended)
 
 	Dim $progpercent = 10
 	Dim $progincrement = Round(_ObjDictCount($recordHash) / $progpercent)
@@ -204,6 +206,8 @@ Func createWordDoc($recordHash)
 	For $myHR In $recordHash
 ;~ 		ConsoleWrite("My key: "&$myHR&" My value: "&_ObjDictGetValue($recordHash, $myHR)&@CRLF)
 		$oDoc = _Word_DocAdd($oWordApp, $wdNewBlankDocument, @ScriptDir & "\CASTemplate.dotx")
+		If @error Then Exit MsgBox($MB_ICONERROR, "createWordDoc: _Word_DocAdd Template", "Error creating a new Word document from template." _
+				 & @CRLF & "@error = " & @error & ", @extended = " & @extended)
 		_Word_DocFindReplace($oDoc, "<ByText>", _ObjDictGetValue($recordHash, $myHR))
 		_Word_DocFindReplace($oDoc, "<BillNo>", $myHR)
 
